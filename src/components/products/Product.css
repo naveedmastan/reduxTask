@@ -1,0 +1,8 @@
+.products{
+    display: flex;
+    flex-wrap:wrap;
+}
+.productBox{
+    border:1px solid #333;
+    margin:10px
+}
