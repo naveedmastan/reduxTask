@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
 export const Form = (props) =>
     (<React.Fragment>
@@ -7,7 +8,7 @@ export const Form = (props) =>
             props.data.map(data => {
                 return (<div key={data.field} className="form-group">
                     <input
-                        placeholder={"Enter "+ data.displayName}
+                        placeholder={"Enter " + data.displayName}
                         type={data.type}
                         name={data.field}
                         value={props[data.field]}
@@ -25,4 +26,17 @@ export const Form = (props) =>
             <button type="clear" onClick={props.clearAll} className='btn'>{props.clearTitle ? props.clearTitle : "Clear"}</button>
         </div>
     </React.Fragment>)
+
+
+Form.propTypes = {
+    data: PropTypes.array.isRequired,
+    error: PropTypes.bool,
+    onSubmit: PropTypes.func.isRequired,
+    clearAll: PropTypes.func.isRequired,
+    clearTitle:PropTypes.string,
+    title:PropTypes.string.isRequired,
+    errorMessage:PropTypes.string,
+    handleChange:PropTypes.func.isRequired,
+};
+
 

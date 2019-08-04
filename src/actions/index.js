@@ -1,4 +1,5 @@
-import axios from 'axios'
+import axios from 'axios';
+const apiUrl = 'http://localhost:8081';
 
 
 export const authSuccess = (payload) => dispatch => {
@@ -19,7 +20,7 @@ export const logout = () => (dispatch) => {
 
 export const deleteUser = () => (dispatch, getState) => {
 
-    axios.post('http://localhost:8081/deleteUser', { id: getState().auth.loggedUser.id })
+    axios.post(`${apiUrl}/deleteUser`, { id: getState().auth.loggedUser.id })
         .then(function (response) {
             dispatch({
                 type: 'LOG_OUT',
@@ -28,15 +29,16 @@ export const deleteUser = () => (dispatch, getState) => {
         .catch(function (error) {
             dispatch({
                 type: 'LOG_OUT',
-        
+
             })
         });
-   
+        
+
 }
 
 export const addUser = (data, history) => (dispatch) => {
 
-    axios.post('http://localhost:8081/addUser', { data: data })
+    axios.post(`${apiUrl}/addUser`, { data: data })
         .then(function (response) {
 
             if (response.data.err) {
@@ -68,7 +70,7 @@ export const addUser = (data, history) => (dispatch) => {
 export const updateUser = (data, history) => (dispatch, getState) => {
 
 
-    axios.post('http://localhost:8081/updateUser', { data: data, id: getState().auth.loggedUser.id })
+    axios.post(`${apiUrl}/updateUser`, { data: data, id: getState().auth.loggedUser.id })
         .then(function (response) {
 
             if (response.data.err) {
@@ -77,6 +79,10 @@ export const updateUser = (data, history) => (dispatch, getState) => {
 
                 })
             } else {
+                dispatch({
+                    type: 'CLEAR_MSG',
+
+                })
                 dispatch({
                     type: 'LOGGED_USER',
                     data: response.data.user
@@ -103,7 +109,7 @@ export const updateUser = (data, history) => (dispatch, getState) => {
 
 export const validateUser = (data, history) => (dispatch, getState) => {
 
-    axios.post('http://localhost:8081/validateUser', { data: data })
+    axios.post(`${apiUrl}/validateUser`, { data: data })
         .then(function (response) {
 
             if (response.data.err) {
@@ -127,5 +133,31 @@ export const validateUser = (data, history) => (dispatch, getState) => {
             dispatch({
                 type: 'AUTHENTICATION_FAILURE',
             })
+        });
+}
+
+export const getAllUsers = () => (dispatch) => {
+    axios.get(`${apiUrl}/allUsers`)
+        .then(function (response) {
+            dispatch({
+                type: 'GET_ALL_USERS',
+                users: response.data
+            })
+        })
+        .catch(function (error) {
+            
+        });
+}
+
+export const getAllProducts = () => (dispatch) => {
+    axios.get(`${apiUrl}/getProducts`)
+        .then(function (response) {
+            dispatch({
+                type: 'GET_PRODUCTS',
+                products: response.data
+            })
+        })
+        .catch(function (error) {
+            
         });
 }

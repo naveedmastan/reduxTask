@@ -23,9 +23,16 @@ var server = app.listen(8081, function () {
     console.log("App listening at http://", port)
 })
 
-app.get('/listUsers', function (req, res) {
+app.get('/allUsers', function (req, res) {
     fs.readFile(__dirname + "/users.json", 'utf8', function (err, data) {
-        //  res.setHeader('Access-Control-Allow-Origin', '*');
+        
+        res.end(data);
+    });
+})
+
+app.get('/getProducts', function (req, res) {
+    fs.readFile(__dirname + "/products.json", 'utf8', function (err, data) {
+        
         res.end(data);
     });
 })

@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import { products, users } from '../sampleData'
 
 const initialState = {
     isAuth: false,
@@ -17,13 +16,20 @@ const auth = (state = initialState, action) => {
         case 'LOG_OUT':
             return {
                 ...state,
-                isAuth: false
+                isAuth: false,
+                msg: undefined
             }
         case 'ADD_USER':
             return {
                 ...state,
                 users: action.users
             }
+        case 'CLEAR_MSG':
+            return {
+                ...state,
+                msg: ""
+            }
+
         case 'AUTHENTICATION_FAILURE':
             return {
                 ...state,
@@ -39,6 +45,11 @@ const auth = (state = initialState, action) => {
                 ...state,
                 msg: action.data.userName + " Profile Created Successfuly"
             }
+        case 'GET_ALL_USERS':
+            return {
+                ...state,
+                users: action.users
+            }
 
         case 'LOGGED_USER':
             return {
@@ -51,8 +62,13 @@ const auth = (state = initialState, action) => {
 }
 
 
-const productData = (state = { products }, action) => {
+const productData = (state = {}, action) => {
     switch (action.type) {
+        case 'GET_PRODUCTS':
+            return {
+                ...state,
+                products: action.products
+            }
         default:
             return state
     }

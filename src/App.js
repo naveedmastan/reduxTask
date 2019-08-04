@@ -14,7 +14,7 @@ const App=()=> {
           <Route exact path="/signUp" component={lazy(() => import("./pages/signup"))} />
           <PrivateRoute path="/viewProducts" component={lazy(() => import("./pages/products"))} />
           <PrivateRoute path="/profile" component={lazy(() => import("./pages/profile"))} />
-          <PrivateRoute path="/addProduct" component={lazy(() => import("./pages/products"))} />
+          {/* <PrivateRoute path="/addProduct" component={lazy(() => import("./pages/products"))} /> */}
           <PrivateRoute path="/editInfo" component={lazy(() => import("./pages/editInfo"))} />
           <PrivateRoute path="/allUsers" component={lazy(() => import("./pages/allUsers"))} />
         </Switch>

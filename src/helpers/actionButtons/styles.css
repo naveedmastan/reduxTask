@@ -1,0 +1,10 @@
+.navBar{
+    display: flex;
+     justify-content: space-between; 
+     margin: 50px 0;
+     background:black
+}
+.navBar button{
+    background: black;
+    border-color:black
+}

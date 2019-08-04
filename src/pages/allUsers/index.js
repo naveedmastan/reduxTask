@@ -2,23 +2,30 @@ import React from "react";
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import '../products/Product.css'
-import { DisplayData } from '../../helpers/displayData'
+import { DisplayData } from '../../helpers/displayData';
+import { getAllUsers } from '../../actions'
 
 class AllUsers extends React.Component {
+    componentDidMount() {
+        this.props.getAllUsers()
+    }
     render() {
+        if (!this.props.users || (this.props.users && this.props.users.length === 0)) {
+            return <div>Loading...</div>
+        }
         return (<div>
             <h3>USERS</h3>
             <div className="products">
                 {
-                    this.props.users.map((user) => {
+                    this.props.users.map((user, index) => {
 
-                        return <div key={user.id} className="productBox">
+                        return <div key={user.id + index} className="productBox">
                             {
                                 Object.keys(user).map((pKey) => {
                                     if (pKey !== "id" && pKey !== "password" && pKey !== 'error') {
-                                        return <DisplayData label={pKey} index={user.id + pKey} value={user[pKey]} />
+                                        return <DisplayData label={pKey} key={user.id + pKey} value={user[pKey]} />
                                     } else {
-                                        return <React.Fragment />
+                                        return null
                                     }
                                 })
                             }
@@ -36,9 +43,12 @@ class AllUsers extends React.Component {
 const mapStateToProps = (state) => {
     return {
         users: state.auth.users,
-
         loggedUser: state.auth.loggedUser
     }
 }
 
-export default connect(mapStateToProps, null)(AllUsers);
+const mapDispatchToProps = {
+    getAllUsers
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllUsers);

@@ -1,8 +1,8 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 
 export const DisplayData = (props) => (
-    <React.Fragment key={props.index}>>
+    <React.Fragment>
         <label>
             {props.label}
         </label>
@@ -12,3 +12,11 @@ export const DisplayData = (props) => (
 
     </React.Fragment>
 )
+
+DisplayData.propTypes = {
+    label: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ])
+};
