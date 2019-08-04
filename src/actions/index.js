@@ -1,4 +1,4 @@
-
+import axios from 'axios'
 
 
 export const authSuccess = (payload) => dispatch => {
@@ -9,85 +9,123 @@ export const authSuccess = (payload) => dispatch => {
 }
 
 
-export const addUser = (data, history) => (dispatch, getState) => {
-    let { users } = getState().auth;
-    let count = 0;
-    users.forEach((user) => {
-        if (user.userName === data.userName) {
+export const logout = () => (dispatch) => {
+    dispatch({
+        type: 'LOG_OUT',
+
+    })
+}
+
+
+export const deleteUser = () => (dispatch, getState) => {
+
+    axios.post('http://localhost:8081/deleteUser', { id: getState().auth.loggedUser.id })
+        .then(function (response) {
+            dispatch({
+                type: 'LOG_OUT',
+            })
+        })
+        .catch(function (error) {
+            dispatch({
+                type: 'LOG_OUT',
+        
+            })
+        });
+   
+}
+
+export const addUser = (data, history) => (dispatch) => {
+
+    axios.post('http://localhost:8081/addUser', { data: data })
+        .then(function (response) {
+
+            if (response.data.err) {
+                dispatch({
+                    type: 'USER_ALREADY EXISTS',
+
+                })
+            } else {
+                dispatch({
+                    type: 'ADD_USER',
+                    users: response.data
+                })
+                history.push('/')
+                dispatch({
+                    type: 'USER_CREATED_SUCCESSFULLY',
+                    data
+                })
+            }
+        })
+        .catch(function (error) {
             dispatch({
                 type: 'USER_ALREADY EXISTS',
                 data
             })
-        } else {
-            count++;
-        }
-    })
-
-    if (count === users.length) {
-        data.id = Math.random().toString(36).slice(2);
-        users.push(data)
-        dispatch({
-            type: 'ADD_USER',
-            users: users
-        })
-        history.push('/')
-        dispatch({
-            type: 'USER_CREATED_SUCCESSFULLY',
-            data
-        })
-    }
-
+        });
 }
 
 
-export const updateUser = (data) => (dispatch, getState) => {
-    let { users } = getState().auth;
-    dispatch({
-        type: 'LOGGED_USER',
-        data
-    })
-    let status = false;
-    users.forEach((user, index) => {
-        if (user.id === data.id) {
-            status = true;
-            users[index] = data
-        }
-    })
-    if (status) {
-        dispatch({
-            type: 'ADD_USER',
-            users: users
+export const updateUser = (data, history) => (dispatch, getState) => {
+
+
+    axios.post('http://localhost:8081/updateUser', { data: data, id: getState().auth.loggedUser.id })
+        .then(function (response) {
+
+            if (response.data.err) {
+                dispatch({
+                    type: 'NO_CHANGES',
+
+                })
+            } else {
+                dispatch({
+                    type: 'LOGGED_USER',
+                    data: response.data.user
+                })
+                history.push('/viewProducts')
+                dispatch({
+                    type: 'UPDATE_USERS',
+                    users: response.data.users
+                })
+            }
         })
-    }
+        .catch(function (error) {
+            dispatch({
+                type: 'NO_CHANGES',
+
+            })
+        });
+
+
 
 
 }
 
 
 export const validateUser = (data, history) => (dispatch, getState) => {
-    let { users } = getState().auth;
-    let count = 0;
 
-    users.forEach((user) => {
-        if ((user.userName === data.userName && user.password === data.password)) {
-            dispatch({
-                type: 'AUTHENTICATION_SUCCESS',
-                payload: true
-            })
-            dispatch({
-                type: 'LOGGED_USER',
-                data
-            })
-        } else {
-            count++;
-        }
-    })
+    axios.post('http://localhost:8081/validateUser', { data: data })
+        .then(function (response) {
 
-    if (count === users.length) {
-        dispatch({
-            type: 'AUTHENTICATION_FAILURE',
+            if (response.data.err) {
+                dispatch({
+                    type: 'AUTHENTICATION_FAILURE',
+                })
+            } else {
+                dispatch({
+                    type: 'AUTHENTICATION_SUCCESS',
+                    payload: true
+                })
+
+                dispatch({
+                    type: 'LOGGED_USER',
+                    data: response.data
+                })
+                history.push('/viewProducts')
+            }
         })
-    } else {
-        history.push('/profile')
-    }
+        .catch(function (error) {
+            dispatch({
+                type: 'AUTHENTICATION_FAILURE',
+            })
+        });
 }

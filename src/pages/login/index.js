@@ -1,10 +1,10 @@
 import React from "react";
-import './Login.css';
+import '../../styles.css';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import { Link } from 'react-router-dom';
 import { authSuccess, validateUser } from '../../actions';
-import { Form } from './form'
+import { Form } from '../../helpers/form/index.js'
 
 class LoginForm extends React.Component {
     constructor(props) {
@@ -32,11 +32,20 @@ class LoginForm extends React.Component {
         this.setState({ userName: "", password: "" })
     }
     render() {
+        let data=[{
+            field:"userName",
+            type:'text',
+            displayName:'User Name'
+        },
+        {
+            field:"password",
+            type:'password',
+            displayName:'Password'
+        }];
         return (
             <div className="loginBox">
-                <h2>Login</h2>
+                <Form handleChange={this.handleChange}  heading={"Login"} data={data} onSubmit={this.onSubmit} errorMessage={"Please Enter Valid Credentials"} clearAll={this.clearAll} title={"Login"} {...this.state} />
                 <h6>{this.props.msg}</h6>
-                <Form handleChange={this.handleChange} onSubmit={this.onSubmit} errorMessage={"Please Enter Valid Credentials"} clearAll={this.clearAll} title={"Login"} {...this.state} />
                 <div className="form-group">
                     <Link to="/signUp">
                         <h6>SignUp</h6>
@@ -48,7 +57,7 @@ class LoginForm extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state)
+
     return {
         errrorMessage: state.auth.error,
         isAuth: state.auth.isAuth,

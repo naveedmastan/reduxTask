@@ -23,11 +23,10 @@ input{
     height:30px;
     text-indent: 5px;
     width:100%;
-    border-radius:15px;
+    border-radius:10px;
 }
 
 input:focus{
-
     outline:none
 
 }

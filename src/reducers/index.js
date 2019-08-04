@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import { products,users } from '../sampleData'
+import { products, users } from '../sampleData'
 
 const initialState = {
     isAuth: false,
-    users: users,
+    users: [],
     error: '',
     msg: undefined,
 };
@@ -13,6 +13,11 @@ const auth = (state = initialState, action) => {
             return {
                 ...state,
                 isAuth: action.payload
+            }
+        case 'LOG_OUT':
+            return {
+                ...state,
+                isAuth: false
             }
         case 'ADD_USER':
             return {

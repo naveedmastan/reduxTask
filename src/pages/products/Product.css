@@ -1,8 +1,11 @@
 .products{
     display: flex;
     flex-wrap:wrap;
+    justify-content: center;
+    align-items: flex-start
 }
 .productBox{
     border:1px solid #333;
-    margin:10px
+    margin:10px;
+    padding: 10px;
 }
